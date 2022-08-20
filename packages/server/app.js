@@ -7,11 +7,9 @@ const typeDefs = require('./schema');
 const server = new ApolloServer({
   typeDefs,
   resolvers,
-  context: ({ req, res }) => ({
-    req,
-    res,
+  context: {
     Todo,
-  }),
+  },
 });
 
 server.listen().then(async ({ url }) => {
