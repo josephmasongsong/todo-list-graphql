@@ -1,12 +1,8 @@
 const db = require('./db');
-require('dotenv').config();
 const { ApolloServer } = require('apollo-server');
 const Todo = require('./models/todo');
-
 const resolvers = require('./resolvers');
 const typeDefs = require('./schema');
-
-db();
 
 const server = new ApolloServer({
   typeDefs,
@@ -18,6 +14,7 @@ const server = new ApolloServer({
   }),
 });
 
-server.listen().then(({ url }) => {
+server.listen().then(async ({ url }) => {
+  await db();
   console.log(`🚀  Server ready at ${url}`);
 });

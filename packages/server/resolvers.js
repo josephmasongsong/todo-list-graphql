@@ -5,21 +5,21 @@ const resolvers = {
     },
   },
   Mutation: {
-    async createTodo(parent, { title, complete }, context) {
-      return context.Todo.create({
+    async createTodo(parent, { title, complete }, { Todo }) {
+      return Todo.create({
         title,
         complete,
       });
     },
-    async updateTodo(parent, { id, title, complete }, context) {
-      return context.Todo.findOneAndUpdate(
+    async updateTodo(parent, { id, title, complete }, { Todo }) {
+      return Todo.findOneAndUpdate(
         { _id: id },
         { $set: { title, complete } },
         { new: true, useFindAndModify: false }
       );
     },
-    async deleteTodo(parent, { id }, context) {
-      return context.Todo.findByIdAndRemove({ _id: id });
+    async deleteTodo(parent, { id }, { Todo }) {
+      return Todo.findByIdAndRemove({ _id: id });
     },
   },
 };
