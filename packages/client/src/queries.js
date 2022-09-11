@@ -10,9 +10,9 @@ const GET_TODOS = gql`
   }
 `;
 
-const ADD_TODO = gql`
-  mutation CreateTodo($title: String!) {
-    createTodo(title: $title, complete: false) {
+const CREATE_TODO = gql`
+  mutation CreateTodo($title: String!, $complete: Boolean!) {
+    createTodo(title: $title, complete: $complete) {
       id
       title
       complete
@@ -21,7 +21,7 @@ const ADD_TODO = gql`
 `;
 
 const DELETE_TODO = gql`
-  mutation DeleteTodo($id: ID) {
+  mutation DeleteTodo($id: ID!) {
     deleteTodo(id: $id) {
       id
       title
@@ -40,4 +40,4 @@ const UPDATE_TODO = gql`
   }
 `;
 
-export { GET_TODOS, ADD_TODO, DELETE_TODO, UPDATE_TODO };
+export { GET_TODOS, CREATE_TODO, DELETE_TODO, UPDATE_TODO };

@@ -6,7 +6,6 @@ import Todo from './components/Todo';
 
 const App = () => {
   const { loading, error, data } = useQuery(GET_TODOS);
-  const options = { refetchQueries: [{ query: GET_TODOS }] };
 
   if (loading) return null;
   if (error) return `Error! ${error}`;
@@ -14,9 +13,9 @@ const App = () => {
   return (
     <div>
       <h1>Todo List</h1>
-      <Form options={options} />
+      <Form />
       {data.todos.map(todo => (
-        <Todo key={todo.id} options={options} todo={todo} />
+        <Todo key={todo.id} todo={todo} />
       ))}
     </div>
   );

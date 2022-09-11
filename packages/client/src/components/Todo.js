@@ -1,13 +1,33 @@
 import { useRef, useState } from 'react';
 import { useMutation } from '@apollo/client';
-import { DELETE_TODO, GET_TODOS, UPDATE_TODO } from '../queries';
+import { GET_TODOS, DELETE_TODO, UPDATE_TODO } from '../queries';
 
-const Todo = ({ todo, options }) => {
+const buttonStyle = {
+  marginLeft: '5px',
+};
+
+const Todo = ({ todo }) => {
   const [isChecked, setIsChecked] = useState(todo.complete);
   const [editable, setEditable] = useState(false);
   const titleRef = useRef();
 
-  const [deleteTodo] = useMutation(DELETE_TODO, options);
+  const [deleteTodo] = useMutation(DELETE_TODO, {
+    variables: { id: todo.id },
+    update: (cache, { data }) => {
+      const todo = data.deleteTodo;
+
+      const todoData = cache.readQuery({
+        query: GET_TODOS,
+      });
+
+      const todos = todoData.todos.filter(t => t.id !== todo.id);
+
+      cache.writeQuery({
+        query: GET_TODOS,
+        data: { todos },
+      });
+    },
+  });
   const [updateTodo] = useMutation(UPDATE_TODO);
 
   const handleUpdate = () => {
@@ -41,7 +61,6 @@ const Todo = ({ todo, options }) => {
     <input
       type="text"
       defaultValue={todo.title}
-      name="title"
       ref={titleRef}
       id={todo.id}
       onKeyDown={e => handleUpdateOnKeyDown(e)}
@@ -53,25 +72,19 @@ const Todo = ({ todo, options }) => {
       {todoItem}
 
       {!todo.complete && (
-        <button onClick={() => setEditable(!editable)}>
+        <button onClick={() => setEditable(!editable)} style={buttonStyle}>
           {editable ? 'cancel' : 'edit'}
         </button>
       )}
 
       {editable ? (
-        <button onClick={handleUpdate}>save</button>
+        <button onClick={handleUpdate} style={buttonStyle}>
+          save
+        </button>
       ) : (
         <>
           {!todo.complete && (
-            <button
-              onClick={() =>
-                deleteTodo({
-                  variables: {
-                    id: todo.id,
-                  },
-                })
-              }
-            >
+            <button onClick={() => deleteTodo()} style={buttonStyle}>
               delete
             </button>
           )}
@@ -79,7 +92,6 @@ const Todo = ({ todo, options }) => {
           <label>
             <input
               type="checkbox"
-              name="complete"
               checked={isChecked}
               onChange={() => handleCheck()}
             />

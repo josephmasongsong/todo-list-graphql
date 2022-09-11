@@ -1,6 +1,6 @@
-const db = require('./db');
 const { ApolloServer } = require('apollo-server');
-const Todo = require('./todo');
+const db = require('./db');
+const Todo = require('./model');
 const resolvers = require('./resolvers');
 const typeDefs = require('./schema');
 
@@ -12,7 +12,8 @@ const server = new ApolloServer({
   },
 });
 
-server.listen().then(async ({ url }) => {
-  await db();
-  console.log(`🚀  Server ready at ${url}`);
+db();
+
+server.listen().then(({ url }) => {
+  console.log(`Server ready at ${url} 🚀`);
 });

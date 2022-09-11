@@ -1,20 +1,33 @@
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
-import './styles.css';
+import './index.css';
 import App from './App';
 import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
 
 const client = new ApolloClient({
   uri: 'http://localhost:4000',
-  cache: new InMemoryCache(),
+  cache: new InMemoryCache({
+    typePolicies: {
+      Query: {
+        fields: {
+          todos: {
+            merge(existing, incoming) {
+              return incoming;
+            },
+            keyFields: ['id'],
+          },
+        },
+      },
+    },
+  }),
 });
 
 const rootElement = document.getElementById('root');
 const root = createRoot(rootElement);
 root.render(
-  <ApolloProvider client={client}>
-    <StrictMode>
+  <StrictMode>
+    <ApolloProvider client={client}>
       <App />
-    </StrictMode>
-  </ApolloProvider>
+    </ApolloProvider>
+  </StrictMode>
 );
