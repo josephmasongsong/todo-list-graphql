@@ -7,7 +7,7 @@ module.exports = async function () {
       useNewUrlParser: true,
       useUnifiedTopology: true,
     });
-    console.log('Successfully connected to database');
+    console.log('Successfully connected to database 🙌');
   } catch (err) {
     console.log('Database connection unsuccessful: ', err);
   }
