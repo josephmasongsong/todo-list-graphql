@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "server": "cd packages/server && nodemon server.js",
+    "server": "cd packages/server && nodemon app.js",
     "client": "cd packages/client && npm run start",
     "start": "concurrently --kill-others-on-fail \"npm run server\"  \"npm run client\""
   },

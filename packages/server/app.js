@@ -1,14 +1,12 @@
 const { ApolloServer } = require('apollo-server');
-const db = require('./db');
-const Todo = require('./model');
-const resolvers = require('./resolvers');
-const typeDefs = require('./schema');
+const db = require('./config/db');
+const todo = require('./api/todo');
 
 const server = new ApolloServer({
-  typeDefs,
-  resolvers,
+  typeDefs: todo.typeDefs,
+  resolvers: todo.resolvers,
   context: {
-    Todo,
+    Todo: todo.model,
   },
 });
 
