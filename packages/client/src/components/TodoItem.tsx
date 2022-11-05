@@ -1,24 +1,34 @@
-import { useRef, useState } from 'react';
+import { useRef, useState, KeyboardEvent } from 'react';
 import { useMutation } from '@apollo/client';
 import { GET_TODOS, DELETE_TODO, UPDATE_TODO } from '../queries';
+
+export interface ITodo {
+  id: string;
+  title: string;
+  complete: boolean;
+}
+
+interface ITodoData {
+  todos: ITodo[];
+}
 
 const buttonStyle = {
   marginLeft: '5px',
 };
 
-const Todo = ({ todo }) => {
+const TodoItem = ({ todo }: { todo: ITodo }) => {
   const [isChecked, setIsChecked] = useState(todo.complete);
   const [editable, setEditable] = useState(false);
-  const titleRef = useRef();
+  const titleRef = useRef<HTMLInputElement>(null);
 
   const [deleteTodo] = useMutation(DELETE_TODO, {
     variables: { id: todo.id },
     update: (cache, { data }) => {
       const todo = data.deleteTodo;
 
-      const todoData = cache.readQuery({
+      const todoData: ITodoData = cache.readQuery({
         query: GET_TODOS,
-      });
+      })!;
 
       const todos = todoData.todos.filter(t => t.id !== todo.id);
 
@@ -34,13 +44,13 @@ const Todo = ({ todo }) => {
     updateTodo({
       variables: {
         id: todo.id,
-        title: titleRef.current.value,
+        title: titleRef.current!.value,
       },
     });
     setEditable(false);
   };
 
-  const handleUpdateOnKeyDown = e => {
+  const handleUpdateOnKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter' || e.keyCode === 13) {
       handleUpdate();
     }
@@ -63,7 +73,7 @@ const Todo = ({ todo }) => {
       defaultValue={todo.title}
       ref={titleRef}
       id={todo.id}
-      onKeyDown={e => handleUpdateOnKeyDown(e)}
+      onKeyDown={handleUpdateOnKeyDown}
     />
   );
 
@@ -103,4 +113,4 @@ const Todo = ({ todo }) => {
   );
 };
 
-export default Todo;
+export default TodoItem;

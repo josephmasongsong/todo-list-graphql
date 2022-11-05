@@ -21,7 +21,7 @@ const client = new ApolloClient({
   }),
 });
 
-const rootElement = document.getElementById('root');
+const rootElement = document.getElementById('root') as HTMLElement;
 const root = createRoot(rootElement);
 root.render(
   <StrictMode>
