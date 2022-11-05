@@ -8,7 +8,7 @@ export interface ITodo {
   complete: boolean;
 }
 
-interface ITodoData {
+export interface ITodoData {
   todos: ITodo[];
 }
 
@@ -21,10 +21,10 @@ const TodoItem = ({ todo }: { todo: ITodo }) => {
   const [editable, setEditable] = useState(false);
   const titleRef = useRef<HTMLInputElement>(null);
 
-  const [deleteTodo] = useMutation(DELETE_TODO, {
+  const [deleteTodo] = useMutation<{ deleteTodo: ITodo }>(DELETE_TODO, {
     variables: { id: todo.id },
     update: (cache, { data }) => {
-      const todo = data.deleteTodo;
+      const todo = data!.deleteTodo;
 
       const todoData: ITodoData = cache.readQuery({
         query: GET_TODOS,
@@ -38,7 +38,7 @@ const TodoItem = ({ todo }: { todo: ITodo }) => {
       });
     },
   });
-  const [updateTodo] = useMutation(UPDATE_TODO);
+  const [updateTodo] = useMutation<{ updateTodo: ITodo }>(UPDATE_TODO);
 
   const handleUpdate = () => {
     updateTodo({

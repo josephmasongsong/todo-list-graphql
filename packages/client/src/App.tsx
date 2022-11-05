@@ -2,14 +2,10 @@ import { useQuery } from '@apollo/client';
 import { GET_TODOS } from './queries';
 
 import Form from './components/Form';
-import TodoItem, { ITodo } from './components/TodoItem';
-
-export interface TodoData {
-  todos: ITodo[];
-}
+import TodoItem, { ITodo, ITodoData } from './components/TodoItem';
 
 const App = () => {
-  const { loading, error, data } = useQuery<TodoData>(GET_TODOS);
+  const { loading, error, data } = useQuery<ITodoData>(GET_TODOS);
 
   return (
     <div>

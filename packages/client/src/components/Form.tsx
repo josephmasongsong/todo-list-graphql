@@ -1,8 +1,7 @@
 import { useState, FormEvent } from 'react';
 import { useMutation } from '@apollo/client';
 import { CREATE_TODO, GET_TODOS } from '../queries';
-import { ITodo } from './TodoItem';
-import { TodoData } from '../App';
+import { ITodo, ITodoData } from './TodoItem';
 
 const Form = () => {
   const [createTodo] = useMutation<{ createTodo: ITodo }>(CREATE_TODO);
@@ -16,7 +15,7 @@ const Form = () => {
         const newTodo = data!.createTodo;
         const todoData = cache.readQuery({
           query: GET_TODOS,
-        }) as TodoData;
+        }) as ITodoData;
 
         cache.writeQuery({
           query: GET_TODOS,
