@@ -4,9 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "server": "cd packages/server && nodemon app.js",
+    "server:build": "cd packages/server && npx tsc",
+    "server:dev": "cd packages/server && nodemon",
     "client": "cd packages/client && npm run start",
-    "start": "concurrently --kill-others-on-fail \"npm run server\"  \"npm run client\""
+    "start": "concurrently --kill-others-on-fail \"npm run server:dev\"  \"npm run client\""
   },
   "keywords": [],
   "author": "Joseph Masongsong <joseph@josephmasongsong.com> (https://www.josephmasongsong.com/)",

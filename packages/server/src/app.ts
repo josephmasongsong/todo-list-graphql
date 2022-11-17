@@ -1,6 +1,6 @@
-const { ApolloServer } = require('apollo-server');
-const db = require('./config/db');
-const todo = require('./api/todo');
+import { ApolloServer } from 'apollo-server';
+import * as todo from './api/todo';
+import db from './config/db';
 
 const server = new ApolloServer({
   typeDefs: todo.typeDefs,
@@ -12,6 +12,6 @@ const server = new ApolloServer({
 
 db();
 
-server.listen().then(({ url }) => {
+server.listen().then(({ url }: { url: string }) => {
   console.log(`Server ready at ${url} 🚀`);
 });

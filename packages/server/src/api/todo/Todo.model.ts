@@ -1,4 +1,10 @@
-const mongoose = require('mongoose');
+import mongoose, { Document } from 'mongoose';
+
+export interface ITodo extends Document {
+  title: string;
+  complete: boolean;
+}
+
 const Schema = mongoose.Schema;
 
 const todoSchema = new Schema({
@@ -13,4 +19,4 @@ const todoSchema = new Schema({
   },
 });
 
-module.exports = mongoose.model('Todo', todoSchema);
+export default mongoose.model<ITodo>('Todo', todoSchema);
