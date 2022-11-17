@@ -1,6 +1,5 @@
 import { useQuery } from '@apollo/client';
 import { GET_TODOS } from './queries';
-
 import Form from './components/Form';
 import TodoItem, { ITodo, ITodoData } from './components/TodoItem';
 
